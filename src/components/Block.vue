@@ -1,29 +1,56 @@
 <template>
-  <div class="block" :class="{ alert: isErr }">
+  <div class="block" :class="{ alert: isErr, highlight: isFocused('block') }">
     <label>Block:</label>
-    <input type="text" :value="id" @change="id" readonly />
+    <input
+      :class="{ highlight: isFocused('id') }"
+      type="text"
+      :value="id"
+      @change="id"
+      readonly
+    />
 
     <label>Nonce:</label>
-    <input type="text" :value="nonce" @change="nonce" readonly />
+    <input
+      :class="{ highlight: isFocused('nonce') }"
+      type="text"
+      v-model="nonce"
+    />
 
     <label>Data:</label>
-    <textarea v-model="data"></textarea>
+    <textarea
+      :class="{ highlight: isFocused('data') }"
+      v-model="data"
+    ></textarea>
 
     <label>Prev:</label>
-    <input type="text" :value="prev" @change="prev" readonly />
+    <input
+      :class="{ highlight: isFocused('prev') }"
+      type="text"
+      :value="prev"
+      @change="prev"
+      readonly
+    />
 
     <label>Hash:</label>
-    <input type="text" v-model="hash" readonly />
+    <input
+      :class="{ highlight: isFocused('hash') }"
+      type="text"
+      v-model="hash"
+      readonly
+    />
 
-    <button class="btn" @click="mine">Mine</button>
+    <button class="btn" :class="{ highlight: isFocused('mine') }" @click="mine">
+      Mine
+    </button>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["id", "nonce", "prev"],
+  props: ["id", "prev", "focusOn"],
   data() {
     return {
+      nonce: "",
       data: "",
       hash: "",
       minedData: null,
@@ -47,11 +74,15 @@ export default {
     mine() {
       if (this.isErr) {
         this.hash = "0000" + this.hash;
+        this.nonce = Math.round(Math.random() * 1000000).toString();
       }
       this.minedData = {
         secret: this.secret,
         hash: this.hash,
       };
+    },
+    isFocused(field) {
+      return this.focusOn.includes(field);
     },
   },
   watch: {
@@ -107,6 +138,22 @@ textarea,
 
 textarea {
   height: 25%;
+}
+
+.highlight {
+  box-shadow: 0 0 2px crimson, 0 0 4px rgb(255, 0, 0), 0 0 8px rgb(255, 35, 35);
+  /* animation: led-light 2s;
+  animation-iteration-count: infinite; */
+}
+
+@keyframes led-light {
+  0%,
+  100% {
+    box-shadow: 0 0 2px crimson, 0 0 4px rgb(255, 0, 0), 0 0 8px rgb(45, 31, 31);
+  }
+  50% {
+    box-shadow: none;
+  }
 }
 
 .btn {

@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      currentIndex: null,
+      currentIndex: -1,
       currentLog: "click to start the lesson!",
       dialogues: [
         // lock 1 block
@@ -25,7 +25,8 @@ export default {
         // unlock 1 block
         "เรามาลองเดากันดีกว่า ว่าเราต้องใส่เลขอะไร hash ถึงจะกลับมาเริ่มต้นด้วย 0 4 ตัวเหมือนเดิม เอาเป็น... 19203",
         "เป็นไง? ลองใส่ลงไปดูสิ",
-        "ไม่ใช่! งั้นถ้าเป็น 49212 ล่ะ ลองใส่ดู อู้ว ยังไม่ใช่",
+        "ไม่ใช่! งั้นถ้าเป็น 49212 ล่ะ ลองใส่ดู",
+        "อู้ว ยังไม่ใช่",
         "เพนฯ: ฮืม แต่เลขมันเยอะมากเลยนะ แล้วอย่างงี้เมื่อไหร่จะเดาถูกล่ะ",
         "bug: ไม่ต้องห่วงไป ในเห็นปุ่มขุดนั่นมั้ย ปุ่มนั่นนะ มันจะช่วย ‘ขุด’ ให้เรา หรือก็คือ มันจะไล่ใส่เลข nonce ให้เราไปเรื่อยๆ จนกว่าจะเจออันที่ใช่ล่ะ นี่ล่ะ ที่เราเรียกว่า mining น่ะ ลองกดดูสิ",
         "โอ้ ดูนั่นสิ เราขุดเจอเลข nonce ที่ทำให้ hash ขึ้นต้นด้วย 0 4 ตัวแล้วล่ะ เจ๋งไปเลย ที่นี้บล็อคเราก็กลับมาทำงานได้เหมือนเดิม เวลานายจะเปลี่ยน data ใหม่ทุกครั้ง นายก็ต้องทำแบบนี้ทุกครั้งล่ะนะ",
@@ -38,26 +39,66 @@ export default {
         "เนี่ยนะ พอนายไปแก้บล็อคไหน บล็อคนั้นและหลังจากนั้นก็จะพังเลยล่ะ มันเป็นแบบนี้แหละ",
         "เห็นแล้วใช่ม้า นี่แหละคือการขุดล่ะ แต่ว่าในโลกแห่งความเป็นจริงมันไม่ได้ง่ายแบบนั้นอ่ะนะ แทนที่จะเป็นอะไร simple แบบนี้ นายต้องแก้โจทย์เลขย้ากยากแทน",
         "ส่วนแทนที่จะมีปุ่มขุดที่จะมาช่วยนาย มันก็จะเป็นเครื่องขุดแทนยังไงล่ะ",
-        "นายก็ลองเล่นเองดูนะ เอาเลย",
+        "นายก็ลองเล่นเองดูนะ เอาเลย!",
         // unlock blocks
       ],
     };
   },
   methods: {
     nextDialogue() {
+      this.currentIndex++;
       switch (this.currentIndex) {
-        case null:
-          this.currentIndex = 0;
-          this.currentLog = this.dialogues[this.currentIndex];
-          break;
-        case this.dialogues.length - 1:
+        case this.dialogues.length:
           // todo: emit end lesson
-          this.currentLog = "you have finished the lesson!";
+          this.currentIndex--;
           break;
+        case 0:
+          this.$emit("event", "focusOn", ["block"]);
+          break;
+        case 1:
+          this.$emit("event", "focusOn", ["id"]);
+          break;
+        case 2:
+          this.$emit("event", "focusOn", ["nonce"]);
+          break;
+        case 3:
+          this.$emit("event", "focusOn", ["data"]);
+          break;
+        case 4:
+          this.$emit("event", "focusOn", ["hash"]);
+          break;
+        case 5:
+          this.$emit("event", "focusOn", ["data", "hash"]);
+          break;
+        case 6:
+          this.$emit("event", "focusOn", ["hash"]);
+          break;
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+          this.$emit("event", "focusOn", ["nonce"]);
+          break;
+        case 13:
+          this.$emit("event", "focusOn", ["mine"]);
+          break;
+        case 16:
+          this.$emit("event", "displayChain", true);
+          break;
+        case 17:
+          this.$emit("event", "focusOn", ["data"], 2);
+          break;
+        case 18:
+          this.$emit("event", "focusOn", ["mine"]);
+          break;
+        // case xxx:
+        //   break;
         default:
-          this.currentIndex += 1;
-          this.currentLog = this.dialogues[this.currentIndex];
+          this.$emit("event", "clear");
       }
+      this.currentLog = this.dialogues[this.currentIndex];
+      console.log(this.currentIndex);
     },
   },
 };
@@ -70,5 +111,6 @@ export default {
   margin: 2%;
   padding: 2%;
   font-size: 1.5vw;
+  cursor: pointer;
 }
 </style>

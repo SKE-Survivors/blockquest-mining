@@ -9,14 +9,23 @@
     </div>
 
     <div class="side right">
-      <Dialogue />
+      <Dialogue @event="handleEvent" />
     </div>
 
-    <div class="blocks">
+    <div v-if="!displayChain" class="blocks">
+      <Block
+        :id="blocks[0].id"
+        :prev="blocks[0].prev"
+        :focusOn="blocks[0].focusFields"
+        @updateHash="handleHashChanged"
+        :key="blocks[0].id"
+      />
+    </div>
+    <div v-else class="blocks">
       <Block
         :id="block.id"
-        :nonce="block.nonce"
         :prev="block.prev"
+        :focusOn="block.focusFields"
         @updateHash="handleHashChanged"
         v-for="block in blocks"
         :key="block.id"
@@ -37,19 +46,48 @@ export default {
   },
   data() {
     return {
+      displayChain: false,
       blocks: [
-        { id: 1, nonce: "12345", prev: "000000000000000000000000000000000000" },
-        { id: 2, nonce: "99876", prev: "" },
-        { id: 3, nonce: "40675", prev: "" },
-        { id: 4, nonce: "62137", prev: "" },
-        { id: 5, nonce: "28699", prev: "" },
+        {
+          id: 1,
+          prev: "000000000000000000000000000000000000",
+          focusFields: [],
+        },
+        { id: 2, prev: "", focusFields: [] },
+        { id: 3, prev: "", focusFields: [] },
+        { id: 4, prev: "", focusFields: [] },
+        { id: 5, prev: "", focusFields: [] },
       ],
     };
   },
   methods: {
+    clear() {
+      this.blocks.forEach((block) => {
+        block.focusFields = [];
+      });
+    },
     handleHashChanged(blockID, newHash) {
       if (blockID != 5) {
         this.blocks[blockID].prev = newHash;
+      }
+    },
+    handleEvent(event, params, id) {
+      switch (event) {
+        case "focusOn":
+          if (id) {
+            this.blocks[id - 1].focusFields = params;
+          } else {
+            this.blocks.forEach((block) => {
+              block.focusFields = params;
+            });
+          }
+          break;
+        case "displayChain":
+          this.displayChain = params;
+          break;
+        default:
+          this.clear();
+          break;
       }
     },
   },
