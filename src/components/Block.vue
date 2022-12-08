@@ -72,6 +72,7 @@ export default {
       this.hash = this.$CryptoJS.AES.encrypt(this.secret, "").toString();
     },
     mine() {
+      // there is a fucking hardcode here!
       if (this.isErr) {
         this.hash = "0000" + this.hash;
         this.nonce = Math.round(Math.random() * 1000000).toString();

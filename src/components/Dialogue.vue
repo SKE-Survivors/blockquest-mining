@@ -49,7 +49,7 @@ export default {
       this.currentIndex++;
       switch (this.currentIndex) {
         case this.dialogues.length:
-          // todo: emit end lesson
+          // todo: emit end lesson, don't know what to do yet
           this.currentIndex--;
           break;
         case 0:
@@ -92,13 +92,10 @@ export default {
         case 18:
           this.$emit("event", "focusOn", ["mine"]);
           break;
-        // case xxx:
-        //   break;
         default:
           this.$emit("event", "clear");
       }
       this.currentLog = this.dialogues[this.currentIndex];
-      console.log(this.currentIndex);
     },
   },
 };
