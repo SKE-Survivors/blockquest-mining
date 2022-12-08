@@ -8,6 +8,10 @@
       <img src="./assets/images/Charon_Sticker.png" alt="" />
     </div>
 
+    <div class="side right">
+      <Dialogue />
+    </div>
+
     <div class="blocks">
       <Block
         :id="block.id"
@@ -23,11 +27,13 @@
 
 <script>
 import Block from "./components/Block.vue";
+import Dialogue from "./components/Dialogue.vue";
 
 export default {
   name: "App",
   components: {
     Block,
+    Dialogue,
   },
   data() {
     return {

@@ -63,7 +63,6 @@ export default {
     setTimeout(() => {
       this.updateHash();
       this.mine();
-      console.log(this.hash);
     }, this.id * 10);
   },
   updated() {
