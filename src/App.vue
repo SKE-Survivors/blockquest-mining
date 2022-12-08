@@ -1,11 +1,23 @@
 <template>
-  <div class="blocks" v-for="block in blocks" :key="block.id">
-    <Block
-      :id="block.id"
-      :nonce="block.nonce"
-      :prev="block.prev"
-      @updateHash="handleHashChanged"
-    />
+  <div class="container">
+    <div class="side bottom left">
+      <img src="./assets/images/Nagisa_Sticker.png" alt="" />
+    </div>
+
+    <div class="side bottom right">
+      <img src="./assets/images/Charon_Sticker.png" alt="" />
+    </div>
+
+    <div class="blocks">
+      <Block
+        :id="block.id"
+        :nonce="block.nonce"
+        :prev="block.prev"
+        @updateHash="handleHashChanged"
+        v-for="block in blocks"
+        :key="block.id"
+      />
+    </div>
   </div>
 </template>
 
@@ -45,10 +57,23 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 .blocks {
-  display: inline-block;
+  background-color: #ababab;
+  margin: auto;
+  width: 50%;
+  height: 100%;
+
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.side {
+  width: 25%;
+}
+
+.side img {
+  width: 75%;
 }
 </style>

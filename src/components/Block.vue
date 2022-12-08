@@ -7,7 +7,7 @@
     <input type="text" :value="nonce" @change="nonce" readonly />
 
     <label>Data:</label>
-    <input type="text" v-model="data" />
+    <textarea v-model="data"></textarea>
 
     <label>Prev:</label>
     <input type="text" :value="prev" @change="prev" readonly />
@@ -74,12 +74,17 @@ export default {
 
 <style scoped>
 .block {
-  width: 30vh;
-  margin: 8px;
-  padding: 8px;
-  border-radius: 8px;
+  height: calc(100% - 4vw);
+  width: 70%;
+  margin: 1vw;
+  padding: 1vw;
+  border-radius: 1vw;
   background-color: rgb(137, 255, 137);
-  /* overflow: hidden; */
+
+  display: inline-block;
+  white-space: normal;
+
+  font-size: 1.5vw;
 }
 
 .alert {
@@ -88,22 +93,32 @@ export default {
 
 label {
   float: left;
-  margin: 4px;
+  margin: 0.5vw;
 }
 
-input {
-  width: calc(100% - 16px);
-  margin: 2px;
-  padding: 4px;
-  border-radius: 4px;
+input,
+textarea,
+.btn {
+  width: calc(100% - 2vw);
+  padding: 0.3vw;
+  border-radius: 0.25vw;
   border-style: none;
+  font-size: 1.5vw;
+}
+
+textarea {
+  height: 25%;
 }
 
 .btn {
-  margin-top: 21px;
-  margin-bottom: 16px;
-  padding: 8px;
-  border-radius: 8px;
-  border-style: none;
+  width: 20%;
+  padding: 0.5vw;
+  margin-top: 8%;
+  border-radius: 0.5vw;
+}
+
+.btn:hover {
+  cursor: pointer;
+  background-color: #ababab;
 }
 </style>
